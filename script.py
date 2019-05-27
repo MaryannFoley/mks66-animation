@@ -20,8 +20,49 @@ from draw import *
   ==================== """
 def first_pass( commands ):
 
-    name = ''
+    name = 'filler'
     num_frames = 1
+
+    ifFrames=False
+    ifVary=False
+
+    ifBname=False
+
+    for command in commands:
+      #print command
+      curr=command["op"]
+
+      if curr == "frames":
+        ifFrames=True
+        if "args" in command:
+          try:
+            num_frames=int(command['args'][0])
+          except:
+            print "Num frames not an integer"
+            sys.exit()
+        else:
+          print "No frames arguments given"
+          sys.exit()
+
+      elif curr == "basename":
+        ifBname=True
+        if "args" in command:
+          name=command['args'][0]
+        else:
+          print "No basename arguments given"
+          sys.exit()
+
+      elif curr == "vary":
+        ifVary=True
+
+    if ifVary and not ifFrames:
+      print "Vary was found but frames was not"
+      sys.exit()
+
+    if not ifBname:
+      print "Using default name" + name
+
+
 
     return (name, num_frames)
 
